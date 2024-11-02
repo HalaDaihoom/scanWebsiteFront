@@ -28,7 +28,7 @@ const AutomaticScannerPage = () => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/Home/automatic-scanner',
+        'http://localhost:5000/api/User/automatic-scanner',
         { url },
         {
           headers: {
