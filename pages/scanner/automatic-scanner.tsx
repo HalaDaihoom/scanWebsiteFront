@@ -110,3 +110,5 @@ const AutomaticScannerPage: React.FC = () => {
 };
 
 export default AutomaticScannerPage;
+
+
