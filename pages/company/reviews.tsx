@@ -8,13 +8,13 @@ const Reviews = () => {
         <h2 className="text-4xl mb-5">User Reviews</h2>
         <ul className="list-none p-0">
           <li className="text-lg mb-2">
-            <strong>John Doe:</strong> "The automatic scanning tool helped us identify vulnerabilities in our app quickly and efficiently!"
+            <strong>John Doe:</strong> The automatic scanning tool helped us identify vulnerabilities in our app quickly and efficiently!
           </li>
           <li className="text-lg mb-2">
-            <strong>Jane Smith:</strong> "The manual scanning techniques provided detailed insights that improved our security posture."
+            <strong>Jane Smith:</strong> The manual scanning techniques provided detailed insights that improved our security posture.
           </li>
           <li className="text-lg mb-2">
-            <strong>Tom Brown:</strong> "Great service! The vulnerability reports were thorough and easy to understand."
+            <strong>Tom Brown:</strong> Great service! The vulnerability reports were thorough and easy to understand.
           </li>
         </ul>
       </main>

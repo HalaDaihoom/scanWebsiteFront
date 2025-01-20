@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import Cookies from 'js-cookie';
 import Layout from './Layout'; // Ensure this matches the file name
 
 const Home = () => {
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [, setMessage] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,10 +36,7 @@ const Home = () => {
     }
   }, [router]);
 
-  const handleLogout = () => {
-    Cookies.remove('token');
-    router.push('/login');
-  };
+ 
 
   return (
     <Layout>
@@ -48,7 +44,7 @@ const Home = () => {
         <main className="flex justify-between p-10 text-white">
           <div className="flex-1 mr-10">
             <h2 className="text-5xl font-bold mb-6">
-              Get a hacker's perspective on your web apps, network, and cloud
+              Get a hacker perspective on your web apps, network, and cloud
             </h2>
             <p className="text-2xl mb-4">
               Pentest-Tools.com helps security teams run the key steps of a penetration test, easily and without expert hacking skills.

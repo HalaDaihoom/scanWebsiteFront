@@ -23,7 +23,7 @@ const ManualScanner = () => {
 
         <h3 className="text-2xl mt-6">3. Cross-Site Request Forgery (CSRF)</h3>
         <p className="text-lg mb-6">
-          CSRF tricks the victim into submitting a request that they did not intend to make. It can exploit the trust that a web application has in the user's browser.
+          CSRF tricks the victim into submitting a request that they did not intend to make. It can exploit the trust that a web application has in the user browser.
         </p>
       </main>
     </Layout>

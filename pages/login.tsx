@@ -29,6 +29,7 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/lock-symbol-and-protection-image_15692197.jpg')" }}>
       <div className="p-8 bg-white bg-opacity-10 shadow-lg backdrop-blur-sm border border-white border-opacity-30 rounded-xl max-w-md w-full">
         <h1 className="text-center text-black font-bold text-2xl mb-6">Login</h1>
+        
         <form onSubmit={handleLogin} className="flex flex-col">
           <input
             type="email"
