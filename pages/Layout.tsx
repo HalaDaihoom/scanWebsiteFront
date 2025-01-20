@@ -71,8 +71,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="relative group">
             <button className="text-white">Profile</button>
             <div className="absolute hidden group-hover:block bg-white text-black rounded-md shadow-lg mt-2 p-2">
-              <Link href="/profile/settings" className="block px-4 py-2 hover:bg-gray-100 rounded">
-                Account Settings
+              <Link href="/scanner/scan-history" className="block px-4 py-2 hover:bg-gray-100 rounded">
+                Scan History
               </Link>
               <Link href="/profile/subscription" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Subscription
