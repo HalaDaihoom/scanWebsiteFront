@@ -68,12 +68,43 @@ const AutomaticScannerPage: React.FC = () => {
               required
             />
           </label>
-          <button type="submit" className="mt-4 py-2 px-4 bg-[#1A1A3D] text-white rounded" disabled={loading}>
+          <button
+            type="submit"
+            className="mt-4 py-2 px-4 bg-[#1A1A3D] text-white rounded flex items-center justify-center"
+            disabled={loading}
+          >
+            {loading && (
+              <div className="loader mr-2">
+                <div className="circle"></div>
+              </div>
+            )}
             {loading ? 'Scanning...' : 'Scan'}
           </button>
         </form>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </main>
+
+      {/* CSS for the spinner */}
+      <style jsx>{`
+        .loader {
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          border: 2px solid transparent;
+          border-top: 2px solid white;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </Layout>
   );
 };
