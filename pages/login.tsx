@@ -9,24 +9,36 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null); // Clear previous errors
 
-    axios
-      .post('http://localhost:5000/api/Home/login', { email, password })
-      .then((response) => {
-        const token = response.data.token;
-        Cookies.set('token', token, { expires: 1 });
-        router.push('/home');
-      })
-      .catch((err) => {
-        console.error('Login failed:', err);
-        setError('Invalid email or password');
-      });
+    try {
+      const response = await axios.post('http://localhost:5000/api/Home/login', { email, password });
+      const token = response.data.token;
+      Cookies.set('token', token, { expires: 1 }); // Set token in cookies for 1 day
+      router.push('/home'); // Redirect to home page
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        // Handle known Axios errors
+        if (err.response && err.response.status === 400) {
+          setError('Invalid email or password');
+        } else {
+          setError('An unexpected error occurred. Please try again later.');
+        }
+      } else {
+        // Handle unexpected errors
+        console.error('Unexpected error:', err);
+        setError('An unexpected error occurred. Please try again later.');
+      }
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/lock-symbol-and-protection-image_15692197.jpg')" }}>
+    <div
+      className="flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/lock-symbol-and-protection-image_15692197.jpg')" }}
+    >
       <div className="p-8 bg-white bg-opacity-10 shadow-lg backdrop-blur-sm border border-white border-opacity-30 rounded-xl max-w-md w-full">
         <h1 className="text-center text-black font-bold text-2xl mb-6">Login</h1>
         <form onSubmit={handleLogin} className="flex flex-col">
