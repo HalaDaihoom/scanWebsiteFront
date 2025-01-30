@@ -1,58 +1,26 @@
 // pages/home.tsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
-import Layout from './Layout'; // Ensure this matches the file name
+import React from 'react';
+import NewLayout from './homeLayout'; // Import the new layout
 
-const Home = () => {
-  const [, setMessage] = useState<string | null>(null);
-  const [, setError] = useState<string | null>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = Cookies.get('token');
-
-    if (!token) {
-      router.push('/login');
-    } else {
-      axios
-        .get('http://localhost:5000/api/Home/protected', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setMessage(response.data.message);
-        })
-        .catch((err) => {
-          console.error('Error fetching protected resource:', err);
-          setError('Error fetching protected resource');
-
-          if (err.response && err.response.status === 401) {
-            router.push('/login');
-          }
-        });
-    }
-  }, [router]);
-
- 
-
+const NewHome = () => {
   return (
-    <Layout>
+    <NewLayout>
       <div className="min-h-screen font-sans bg-gray-900 text-white">
         <main className="flex justify-between p-10 text-white">
           <div className="flex-1 mr-10">
             <h2 className="text-5xl font-bold mb-6">
-              Get a hacker perspective on your web apps, network, and cloud
+              Discover Our Automatic Vulnerability Scanner
             </h2>
             <p className="text-2xl mb-4">
-              Pentest-Tools.com helps security teams run the key steps of a penetration test, easily and without expert hacking skills.
+              Our automatic vulnerability scanner helps you generate comprehensive reports that identify all potential vulnerabilities in your web apps, networks, and cloud environments.
+            </p>
+            <p className="text-xl mb-4">
+              The scanner provides:
             </p>
             <ul className="text-xl list-disc ml-6 space-y-2">
-              <li>Automatically map the attack surface</li>
-              <li>Scan for the latest critical vulnerabilities</li>
-              <li>Exploit to assess the business risk</li>
+              <li>A full report with all vulnerabilities found</li>
+              <li>Details on the level of each vulnerability</li>
+              <li>Suggestions on how to mitigate risks and secure your system</li>
             </ul>
           </div>
           <div className="flex-1">
@@ -63,8 +31,8 @@ const Home = () => {
           </div>
         </main>
       </div>
-    </Layout>
+    </NewLayout>
   );
 };
 
-export default Home;
+export default NewHome;
