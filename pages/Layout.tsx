@@ -9,7 +9,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const handleLogout = () => {
     Cookies.remove('token');
-    router.push('/login');
+    router.push('/home');
   };
 
   return (
@@ -26,7 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" />
                 Automatic Scanner
               </Link>
-              <Link href="/scanners/xss-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+              {/* <Link href="/scanners/xss-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" />
                 XSS Scanner
               </Link>
@@ -37,7 +37,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <Link href="/scanners/csrf-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
                 CSRF Scanner
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -47,13 +47,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <Link href="/services/automatic-scanner" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Automatic Scanning
               </Link>
-              <Link href="/services/manual-scanner" className="block px-4 py-2 hover:bg-gray-100 rounded">
+              {/* <Link href="/services/manual-scanner" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Manual Scanning
-              </Link>
+              </Link> */}
             </div>
           </div>
 
-          <div className="relative group">
+          {/* <div className="relative group">
             <button className="text-white">Company</button>
             <div className="absolute hidden group-hover:block bg-white text-black rounded-md shadow-lg mt-2 p-2">
               <Link href="/company/about" className="block px-4 py-2 hover:bg-gray-100 rounded">
@@ -66,7 +66,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 Contact Us
               </Link>
             </div>
-          </div>
+          </div> */}
 
           <div className="relative group">
             <button className="text-white">Profile</button>
@@ -74,9 +74,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <Link href="/scanner/scan-history" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Scan History
               </Link>
-              <Link href="/profile/subscription" className="block px-4 py-2 hover:bg-gray-100 rounded">
+              {/* <Link href="/profile/subscription" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Subscription
-              </Link>
+              </Link> */}
             </div>
           </div>
 
