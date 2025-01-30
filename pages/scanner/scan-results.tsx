@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
@@ -21,6 +22,7 @@ const ScanResultsPage: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true); // Initial state is true
+  const [expandedIndices, setExpandedIndices] = useState<number[]>([]); // Track expanded items
   const router = useRouter();
   const { scanId } = router.query;
 
@@ -67,26 +69,101 @@ const ScanResultsPage: React.FC = () => {
     fetchResults();
   }, [scanId, router]); // Run whenever `scanId` changes
 
+  // Toggle dropdown for a specific vulnerability
+  const toggleDetails = (index: number) => {
+    if (expandedIndices.includes(index)) {
+      // If already expanded, collapse it
+      setExpandedIndices(expandedIndices.filter((i) => i !== index));
+    } else {
+      // If not expanded, add it to the expanded list
+      setExpandedIndices([...expandedIndices, index]);
+    }
+  };
+
+  // Format JSON details with proper line breaks and indentation
+  const formatDetails = (details: string) => {
+    try {
+      const parsedDetails = JSON.parse(details);
+      return JSON.stringify(parsedDetails, null, 2)
+        .split('\n')
+        .map((line, index) => {
+          // Check if the line contains the "Description" field
+          if (line.includes('"Description":')) {
+            const [key, value] = line.split(':');
+            return (
+              <div key={index} className="whitespace-pre-wrap break-words">
+                {key}:{value}
+              </div>
+            );
+          }
+          return (
+            <div key={index} className="whitespace-pre-wrap break-words">
+              {line}
+            </div>
+          );
+        });
+    } catch (error) {
+      return details; // Fallback to raw details if parsing fails
+    }
+  };
+
   return (
     <Layout>
-      <main className="flex flex-col items-center justify-center min-h-screen py-10 bg-[#0A0A23] text-white">
-        <h1 className="text-3xl mb-5">Scan Results</h1>
-        {loading && <p className="text-gray-300 mb-5">Loading reports...</p>}
-        {message && <p className="text-green-500">{message}</p>}
-        {error && <p className="text-red-500">{error}</p>}
+      <main className="flex flex-col items-center justify-center min-h-screen py-10 bg-gray-900 text-white">
+        <h1 className="text-4xl font-bold mb-6 text-indigo-400">Scan Results Report</h1>
+        {loading && (
+          <p className="text-gray-400 mb-5 text-lg animate-pulse">Loading reports...</p>
+        )}
+        {message && (
+          <p className="text-green-400 text-lg mb-5">{message}</p>
+        )}
+        {error && (
+          <p className="text-red-400 text-lg mb-5">{error}</p>
+        )}
 
         {!loading && (
-          <div className="w-full max-w-4xl bg-[#1A1A3D] text-white p-5 rounded shadow-lg">
-            {results.length === 0 && <p className="text-gray-400">No results found.</p>}
-            <ul>
-              {results.map((result, index) => (
-                <li key={index} className="border-b py-3">
-                  <strong>Severity:</strong> {result.severity}
-                  <br />
-                  <strong>Details:</strong> {result.details}
-                </li>
-              ))}
-            </ul>
+          <div className="w-full max-w-4xl space-y-4">
+            {results.length === 0 ? (
+              <p className="text-gray-400 text-center text-lg">No vulnerabilities found.</p>
+            ) : (
+              results.map((result, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800 text-white p-6 rounded-lg shadow-2xl"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg font-semibold text-indigo-400">Severity:</span>
+                      <span
+                        className={`text-lg font-medium ${
+                          result.severity === 'High'
+                            ? 'text-red-400'
+                            : result.severity === 'Medium'
+                            ? 'text-yellow-400'
+                            : 'text-green-400'
+                        }`}
+                      >
+                        {result.severity}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => toggleDetails(index)}
+                      className="text-indigo-400 hover:text-indigo-300 focus:outline-none"
+                    >
+                      {expandedIndices.includes(index) ? '▲ Hide Details' : '▼ Show Details'}
+                    </button>
+                  </div>
+                  {expandedIndices.includes(index) && (
+                    <div className="mt-4">
+                      <span className="text-lg font-semibold text-indigo-400">Details:</span>
+                      <div className="text-sm text-gray-200 bg-gray-700 p-3 rounded-md mt-2">
+                        {formatDetails(result.details)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         )}
       </main>
