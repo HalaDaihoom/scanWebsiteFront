@@ -17,7 +17,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <header className="bg-gray-800 p-6 flex items-center justify-between">
         <h1 className="text-3xl font-bold">Vulnerability Scanner</h1>
         <nav className="flex space-x-6">
-          <Link href="/home" className="text-white hover:underline">Home</Link>
+          <Link href="/userhome" className="text-white hover:underline">Home</Link>
 
           <div className="relative group">
             <button className="text-white">Scanners</button>
