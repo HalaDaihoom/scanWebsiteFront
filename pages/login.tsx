@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL; 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,28 +13,43 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); 
+    setError(null); // Clear previous errors
 
     try {
-      console.log("API URL:", API_URL); 
-
       const response = await axios.post(`${API_URL}api/login`, { email, password });
       const token = response.data.token;
-      Cookies.set('token', token, { expires: 1 }); 
-      router.push('/userhome');
+      Cookies.set('token', token, { expires: 1 }); // Set token in cookies for 1 day
+      router.push('/userhome'); // Redirect to home page
 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
+        // Handle known Axios errors
         if (err.response && err.response.status === 400) {
           setError('Invalid email or password');
         } else {
           setError('An unexpected error occurred. Please try again later.');
         }
       } else {
+        // Handle unexpected errors
         console.error('Unexpected error:', err as Error);
         setError('An unexpected error occurred. Please try again later.');
       }
     }
+    
+    // } catch (err: any) {
+    //   if (axios.isAxiosError(err)) {
+    //     // Handle known Axios errors
+    //     if (err.response && err.response.status === 400) {
+    //       setError('Invalid email or password');
+    //     } else {
+    //       setError('An unexpected error occurred. Please try again later.');
+    //     }
+    //   } else {
+    //     // Handle unexpected errors
+    //     console.error('Unexpected error:', err);
+    //     setError('An unexpected error occurred. Please try again later.');
+    //   }
+    // }
   };
 
   return (
