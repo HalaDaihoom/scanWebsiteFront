@@ -65,7 +65,7 @@ const Register = () => {
     if (image) formData.append('Image', image);
 
     try {
-      const response = await axios.post(`${API_URL}api/register`, formData, {
+      const response = await axios.post(`${API_URL}api/users`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
