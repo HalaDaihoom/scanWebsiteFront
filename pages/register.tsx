@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -63,7 +65,7 @@ const Register = () => {
     if (image) formData.append('Image', image);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/register', formData, {
+      const response = await axios.post(`${API_URL}api/register`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
