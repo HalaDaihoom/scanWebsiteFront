@@ -40,7 +40,7 @@ const ScanResultsPage: React.FC = () => {
         }
 
         const response: AxiosResponse<ResultsResponse> = await axios.get(
-          `http://localhost:5000/api/scanners/automatic-scanner/scan-results?scanId=${scanId}`,
+          `https://scanwebsite.azurewebsites.net/api/scan-result?scanId=${scanId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -72,31 +72,43 @@ const ScanResultsPage: React.FC = () => {
     );
   };
 
-  const formatDetails = (details: string) => {
+  const formatDetails = (details: string | null | undefined) => {
+    if (!details) {
+      return <div className="text-sm text-gray-200">No details available.</div>;
+    }
+
     try {
       const parsedDetails = JSON.parse(details);
-      const { Alert, URL, Risk, Confidence, Description, Solution, Reference } = parsedDetails;
+      const { URL, Risk, Confidence, Description, Solution, Reference } = parsedDetails;
 
       return (
         <div className="text-sm text-gray-200 bg-gray-700 p-3 rounded-md mt-2">
+          {parsedDetails.Alert && (
+            <div>
+              <span className="font-semibold text-red-400">Alert:</span> {parsedDetails.Alert}
+            </div>
+          )}
           {URL && (
             <div>
-              <span className="font-semibold text-indigo-400">URL:</span> {URL}
+              <span className="font-semibold text-indigo-400">URL:</span>{' '}
+              <a href={URL} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                {URL}
+              </a>
             </div>
           )}
           {Risk && (
             <div>
-              <span className="font-semibold text-indigo-400">Risk:</span> {Risk}
+              <span className="font-semibold text-yellow-400">Risk:</span> {Risk}
             </div>
           )}
           {Confidence && (
             <div>
-              <span className="font-semibold text-indigo-400">Confidence:</span> {Confidence}
+              <span className="font-semibold text-green-400">Confidence:</span> {Confidence}
             </div>
           )}
           {Description && (
             <div className="mt-2">
-              <span className="font-semibold text-indigo-400">Description:</span> {Description}
+              <span className="font-semibold text-gray-300">Description:</span> {Description}
             </div>
           )}
           {Solution && (
@@ -114,8 +126,9 @@ const ScanResultsPage: React.FC = () => {
           )}
         </div>
       );
-    } catch (error) {
-      return <div className="text-sm text-gray-200">{details}</div>;
+    } catch (err) {
+      console.error("Failed to parse details:", err);
+      return <div className="text-sm text-gray-200">Invalid details format.</div>;
     }
   };
 
@@ -134,13 +147,15 @@ const ScanResultsPage: React.FC = () => {
             ) : (
               results.map((result, index) => {
                 let alertText = "Unknown Alert";
-                let formattedDetails = result.details;
+                const hasDetails = result.details && result.details.trim() !== "";
 
                 try {
-                  const parsedDetails = JSON.parse(result.details);
-                  alertText = parsedDetails.Alert || "Unknown Alert";
-                } catch (error) {
-                  console.error("Failed to parse details:", error);
+                  if (hasDetails) {
+                    const parsedDetails = JSON.parse(result.details);
+                    alertText = parsedDetails.Alert || "Unknown Alert";
+                  }
+                } catch (err) {
+                  console.error("Failed to parse details:", err);
                 }
 
                 return (
