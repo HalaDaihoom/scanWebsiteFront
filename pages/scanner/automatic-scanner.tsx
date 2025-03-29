@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import Layout from '../Layout';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const AutomaticScannerPage: React.FC = () => {
   const [url, setUrl] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +33,7 @@ const AutomaticScannerPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/scanners/automatic-scanner',
+        `${API_URL}api/scan-requests`,
         { url },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -78,7 +80,7 @@ const AutomaticScannerPage: React.FC = () => {
                 <div className="circle"></div>
               </div>
             )}
-            {loading ? 'Scanning...' : 'Scan'}
+            {loading ? 'Calm down Johnny...' : 'Scan'}
           </button>
         </form>
         {error && <p className="text-red-500 mt-2">{error}</p>}
