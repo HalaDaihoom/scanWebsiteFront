@@ -33,7 +33,8 @@ const AutomaticScannerPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}api/scan-requests`,
+        `${API_URL}api/scanners/automatic-scanner/scan-requests`,
+        //`${API_URL}api/scan-requests`,
         { url },
         { headers: { Authorization: `Bearer ${token}` } }
       );
