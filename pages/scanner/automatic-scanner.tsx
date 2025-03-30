@@ -30,6 +30,8 @@ const AutomaticScannerPage: React.FC = () => {
       router.push('/login');
       return;
     }
+    console.log("API_URL:", API_URL);
+
 
     try {
       const response = await axios.post(
