@@ -16,7 +16,7 @@ const Login = () => {
     setError(null); // Clear previous errors
 
     try {
-      const response = await axios.post(`${API_URL}api/login`, { email, password });
+      const response = await axios.post(`${API_URL}/api/login`, { email, password });
       const token = response.data.token;
       Cookies.set('token', token, { expires: 1 }); // Set token in cookies for 1 day
       router.push('/userhome'); // Redirect to home page

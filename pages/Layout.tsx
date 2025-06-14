@@ -26,7 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" />
                 Automatic Scanner
               </Link>
-              {/* <Link href="/scanners/xss-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+               <Link href="/scanners/xss-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" />
                 XSS Scanner
               </Link>
@@ -34,10 +34,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" />
                 SQLI Scanner
               </Link>
-              <Link href="/scanners/csrf-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+              <Link href="/scanner/subdomain-takeover" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
-                CSRF Scanner
-              </Link> */}
+                Subdomain TakeOver
+              </Link> 
             </div>
           </div>
 
@@ -47,9 +47,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <Link href="/services/automatic-scanner" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Automatic Scanning
               </Link>
-              {/* <Link href="/services/manual-scanner" className="block px-4 py-2 hover:bg-gray-100 rounded">
+              <Link href="/services/manual-scanner" className="block px-4 py-2 hover:bg-gray-100 rounded">
                 Manual Scanning
-              </Link> */}
+              </Link> 
             </div>
           </div>
 

@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import Layout from './Layout'; // Ensure this matches the file name
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const Home = () => {
   const [, setMessage] = useState<string | null>(null);
   const [, setError] = useState<string | null>(null);
@@ -17,7 +19,7 @@ const Home = () => {
       router.push('/login');
     } else {
       axios
-        .get('http://localhost:5000/api/home', {
+        .get(`${API_URL}/api/home`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
