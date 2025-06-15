@@ -9,7 +9,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const handleLogout = () => {
     Cookies.remove('token');
-    router.push('/home');
+    router.push('/');
   };
 
   return (
@@ -26,7 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" />
                 Automatic Scanner
               </Link>
-               <Link href="/scanners/xss-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+               <Link href="/scanner/xss-scanner" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" />
                 XSS Scanner
               </Link>
@@ -34,7 +34,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" />
                 SQLI Scanner
               </Link>
-              <Link href="/scanner/subdomain-takeover" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+              <Link href="/scanner/subdomain/subdomain-takeover" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
                 Subdomain TakeOver
               </Link> 
@@ -53,20 +53,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
 
-          {/* <div className="relative group">
-            <button className="text-white">Company</button>
-            <div className="absolute hidden group-hover:block bg-white text-black rounded-md shadow-lg mt-2 p-2">
-              <Link href="/company/about" className="block px-4 py-2 hover:bg-gray-100 rounded">
-                About Us
-              </Link>
-              <Link href="/company/reviews" className="block px-4 py-2 hover:bg-gray-100 rounded">
-                Reviews
-              </Link>
-              <Link href="/company/contact" className="block px-4 py-2 hover:bg-gray-100 rounded">
-                Contact Us
-              </Link>
-            </div>
-          </div> */}
+      
 
           <div className="relative group">
             <button className="text-white">Profile</button>

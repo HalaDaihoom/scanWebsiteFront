@@ -18,8 +18,7 @@ const Home = () => {
     if (!token) {
       router.push('/login');
     } else {
-      axios
-        .get(`${API_URL}/api/home`, {
+      axios.get(`${API_URL}/api`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -37,7 +36,6 @@ const Home = () => {
         });
     }
   }, [router]);
-
  
 
   return (
