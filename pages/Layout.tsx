@@ -30,7 +30,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" />
                 XSS Scanner
               </Link>
-              <Link href="/scanners/sqli-finder" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+              <Link href="/scanner/sql-injection" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
                 <img src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" />
                 SQLI Scanner
               </Link>
