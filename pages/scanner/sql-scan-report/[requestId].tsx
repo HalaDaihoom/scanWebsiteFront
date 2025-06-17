@@ -49,16 +49,33 @@ const SQLcanReportPage: React.FC = () => {
 
         router.push(`/scanner/sql-scan-results/${requestId}`);
       } 
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-
-      catch (err: any) {
+      catch (err: unknown) {
         console.error('Download error:', err);
-        const message =
-          err?.response?.data ||
-          err?.message ||
-          'An error occurred while downloading the report.';
+      
+        let message = 'An error occurred while downloading the report.';
+      
+        if (
+          typeof err === 'object' &&
+          err !== null &&
+          'response' in err &&
+          typeof (err as any).response === 'object'
+        ) {
+          message = (err as any).response?.data || (err as any).message || message;
+        } else if (err instanceof Error) {
+          message = err.message;
+        }
+      
         setError(message);
-      } finally {
+      }
+      
+      // catch (err: any) {
+      //   console.error('Download error:', err);
+      //   const message =
+      //     err?.response?.data ||
+      //     err?.message ||
+      //     'An error occurred while downloading the report.';
+      //   setError(message);
+      // } finally {
         setLoading(false);
       }
     };

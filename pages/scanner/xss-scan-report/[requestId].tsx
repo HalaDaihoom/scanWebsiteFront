@@ -49,12 +49,28 @@ const XSSScanReportPage: React.FC = () => {
 
         router.push(`/scanner/xss-scan-results/${requestId}`);
       } 
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-
-      catch (err: any) {
-        setError(err.response?.data || 'Failed to download XSS report. Please try again later.');
+      catch (err: unknown) {
+        let message = 'Failed to download XSS report. Please try again later.';
+      
+        if (
+          typeof err === 'object' &&
+          err !== null &&
+          'response' in err &&
+          typeof (err as any).response === 'object'
+        ) {
+          message = (err as any).response?.data || message;
+        } else if (err instanceof Error) {
+          message = err.message;
+        }
+      
+        setError(message);
         console.error(err);
-      } 
+      }
+      
+      // catch (err: any) {
+      //   setError(err.response?.data || 'Failed to download XSS report. Please try again later.');
+      //   console.error(err);
+      // } 
       finally {
         setLoading(false);
       }

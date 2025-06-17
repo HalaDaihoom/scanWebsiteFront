@@ -47,11 +47,17 @@ const Home = () => {
       // Redirect with scanId
       router.push(`/scanner/subdomain/subdomain-result?scanId=${data.scanId}`);
     } 
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-
-    catch (err: any) {
-      setError(err.message || 'Unexpected error');
+    catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unexpected error');
+      }
     }
+    
+    // catch (err: any) {
+    //   setError(err.message || 'Unexpected error');
+    // }
 
     setLoading(false);
   };

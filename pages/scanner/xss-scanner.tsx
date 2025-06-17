@@ -50,14 +50,30 @@ const XSSScannerPage: React.FC = () => {
         setError('Redirect URL is missing in the response.');
       }
     } 
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-
-    catch (err: any) {
-      setError(err.response?.data || 'An error occurred during XSS scan submission.');
+    catch (err: unknown) {
       console.error(err);
+      let errorMessage = 'An error occurred during XSS scan submission.';
+    
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        typeof (err as any).response === 'object'
+      ) {
+        errorMessage = (err as any).response?.data || errorMessage;
+      }
+    
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
+    
+    // catch (err: any) {
+    //   setError(err.response?.data || 'An error occurred during XSS scan submission.');
+    //   console.error(err);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (

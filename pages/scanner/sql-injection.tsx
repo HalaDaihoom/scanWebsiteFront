@@ -50,17 +50,42 @@ const SQLScannerPage: React.FC = () => {
       setError('Redirect URL is missing in the response.');
     }
   } 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-
-  catch (err: any) {
-    console.error('Scan error:', err.response?.data);
-    const errorMessage = err.response?.data?.Results?.[0]?.Details || 
-                        err.response?.data?.Message || 
-                        'Failed to initiate SQL scan.';
+  catch (err: unknown) {
+    console.error('Scan error:', err);
+  
+    let errorMessage = 'Failed to initiate SQL scan.';
+  
+    if (
+      typeof err === 'object' &&
+      err !== null &&
+      'response' in err &&
+      typeof (err as any).response === 'object'
+    ) {
+      const response = (err as any).response;
+      const results = response?.data?.Results;
+      const message = response?.data?.Message;
+  
+      if (Array.isArray(results) && results[0]?.Details) {
+        errorMessage = results[0].Details;
+      } else if (typeof message === 'string') {
+        errorMessage = message;
+      }
+    }
+  
     setError(errorMessage);
   } finally {
     setLoading(false);
   }
+  
+  // catch (err: any) {
+  //   console.error('Scan error:', err.response?.data);
+  //   const errorMessage = err.response?.data?.Results?.[0]?.Details || 
+  //                       err.response?.data?.Message || 
+  //                       'Failed to initiate SQL scan.';
+  //   setError(errorMessage);
+  // } finally {
+  //   setLoading(false);
+  // }
   };
 
   return (

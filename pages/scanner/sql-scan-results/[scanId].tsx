@@ -63,18 +63,41 @@ const SQLScanResultsPage: React.FC = () => {
         setResults(data);
         setMessage(data.length > 0 ? 'SQL injection scan results loaded successfully.' : 'No SQL vulnerabilities found.');
       }
-      /* eslint-disable @typescript-eslint/no-explicit-any */
- 
-      catch (err: any) {
+      catch (err: unknown) {
         console.error('API Error:', err);
-        const errorMessage = err.response?.data
-          ? typeof err.response.data === 'string'
-            ? err.response.data
-            : JSON.stringify(err.response.data)
-          : 'Failed to load SQL scan results. Please try again later.';
+        let errorMessage = 'Failed to load SQL scan results. Please try again later.';
+      
+        if (
+          typeof err === 'object' &&
+          err !== null &&
+          'response' in err &&
+          typeof (err as any).response === 'object'
+        ) {
+          const responseData = (err as any).response?.data;
+          if (typeof responseData === 'string') {
+            errorMessage = responseData;
+          } else {
+            errorMessage = JSON.stringify(responseData);
+          }
+        } else if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+      
         setError(errorMessage);
         setResults([]);
-      } finally {
+      }
+      
+      // catch (err: any) {
+      //   console.error('API Error:', err);
+      //   const errorMessage = err.response?.data
+      //     ? typeof err.response.data === 'string'
+      //       ? err.response.data
+      //       : JSON.stringify(err.response.data)
+      //     : 'Failed to load SQL scan results. Please try again later.';
+      //   setError(errorMessage);
+      //   setResults([]);
+      // }
+       finally {
         setLoading(false);
       }
     };

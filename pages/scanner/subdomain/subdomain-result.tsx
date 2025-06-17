@@ -39,11 +39,18 @@ const ScanResult = () => {
         }
 
       } 
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-
-      catch (err: any) {
-        setError(err.message || 'An error occurred');
-      } finally {
+      catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An error occurred');
+        }
+      }
+      
+      // catch (err: any) {
+      //   setError(err.message || 'An error occurred');
+      // }
+       finally {
         setLoading(false);
       }
     };

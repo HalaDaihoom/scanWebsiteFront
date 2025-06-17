@@ -58,17 +58,42 @@ const XSSScanResultsPage: React.FC = () => {
         setResults(data);
         setMessage(data.length > 0 ? 'XSS scan results loaded successfully.' : 'No XSS vulnerabilities found.');
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-       catch (err: any) {
+      catch (err: unknown) {
         console.error('API Error:', err);
-        const errorMessage = err.response?.data
-          ? typeof err.response.data === 'string'
-            ? err.response.data
-            : JSON.stringify(err.response.data)
-          : 'Failed to load XSS scan results. Please try again later.';
+        let errorMessage = 'Failed to load XSS scan results. Please try again later.';
+      
+        if (
+          typeof err === 'object' &&
+          err !== null &&
+          'response' in err &&
+          typeof (err as any).response === 'object'
+        ) {
+          const response = (err as any).response;
+          const data = response?.data;
+      
+          if (typeof data === 'string') {
+            errorMessage = data;
+          } else {
+            errorMessage = JSON.stringify(data);
+          }
+        } else if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+      
         setError(errorMessage);
         setResults([]);
-      } finally {
+      }
+            //  catch (err: any) {
+      //   console.error('API Error:', err);
+      //   const errorMessage = err.response?.data
+      //     ? typeof err.response.data === 'string'
+      //       ? err.response.data
+      //       : JSON.stringify(err.response.data)
+      //     : 'Failed to load XSS scan results. Please try again later.';
+      //   setError(errorMessage);
+      //   setResults([]);
+      // }
+       finally {
         setLoading(false);
       }
     };
@@ -114,12 +139,28 @@ const XSSScanResultsPage: React.FC = () => {
       window.URL.revokeObjectURL(url);
 
     } 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-    catch (err: any) {
-      setError('Failed to download XSS report. Please try again later.');
-      console.error(err);
+    catch (err: unknown) {
+      console.error('Download error:', err);
+    
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        typeof (err as any).response === 'object'
+      ) {
+        const response = (err as any).response;
+        const message =
+          response?.data?.message || 'Failed to download XSS report. Please try again later.';
+        setError(message);
+      } else {
+        setError('Failed to download XSS report. Please try again later.');
+      }
     }
+    
+    // catch (err: any) {
+    //   setError('Failed to download XSS report. Please try again later.');
+    //   console.error(err);
+    // }
   };
 
   return (
