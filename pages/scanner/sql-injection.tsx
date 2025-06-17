@@ -7,6 +7,15 @@ import Layout from '../Layout';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+function isAxiosErrorWithResponse(err: unknown): err is { response: { data: any } } {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'response' in err &&
+    typeof (err as any).response === 'object'
+  );
+}
+
 const SQLScannerPage: React.FC = () => {
   const [url, setUrl] = useState<string>('');
   const [deepScan, setDeepScan] = useState<boolean>(false);
@@ -55,25 +64,22 @@ const SQLScannerPage: React.FC = () => {
   
     let errorMessage = 'Failed to initiate SQL scan.';
   
-    if (
-      typeof err === 'object' &&
-      err !== null &&
-      'response' in err &&
-      typeof (err as any).response === 'object'
-    ) {
-      const response = (err as any).response;
-      const results = response?.data?.Results;
-      const message = response?.data?.Message;
+    if (isAxiosErrorWithResponse(err)) {
+      const results = err.response?.data?.Results;
+      const message = err.response?.data?.Message;
   
       if (Array.isArray(results) && results[0]?.Details) {
         errorMessage = results[0].Details;
       } else if (typeof message === 'string') {
         errorMessage = message;
       }
+    } else if (err instanceof Error) {
+      errorMessage = err.message;
     }
   
     setError(errorMessage);
-  } finally {
+  }
+   finally {
     setLoading(false);
   }
   
