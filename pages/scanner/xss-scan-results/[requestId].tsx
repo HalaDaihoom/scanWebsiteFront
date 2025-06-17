@@ -57,7 +57,9 @@ const XSSScanResultsPage: React.FC = () => {
         const data = Array.isArray(response.data.$values) ? response.data.$values : [];
         setResults(data);
         setMessage(data.length > 0 ? 'XSS scan results loaded successfully.' : 'No XSS vulnerabilities found.');
-      } catch (err: any) {
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       catch (err: any) {
         console.error('API Error:', err);
         const errorMessage = err.response?.data
           ? typeof err.response.data === 'string'
@@ -110,7 +112,11 @@ const XSSScanResultsPage: React.FC = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-    } catch (err: any) {
+
+    } 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+    catch (err: any) {
       setError('Failed to download XSS report. Please try again later.');
       console.error(err);
     }

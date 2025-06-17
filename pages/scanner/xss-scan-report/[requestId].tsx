@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -49,7 +51,8 @@ const XSSScanReportPage: React.FC = () => {
       } catch (err: any) {
         setError(err.response?.data || 'Failed to download XSS report. Please try again later.');
         console.error(err);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
