@@ -46,7 +46,10 @@ const Home = () => {
 
       // Redirect with scanId
       router.push(`/scanner/subdomain/subdomain-result?scanId=${data.scanId}`);
-    } catch (err: any) {
+    } 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+
+    catch (err: any) {
       setError(err.message || 'Unexpected error');
     }
 

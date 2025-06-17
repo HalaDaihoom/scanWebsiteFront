@@ -38,7 +38,10 @@ const ScanResult = () => {
           setDomain(parts.slice(-2).join('.')); // extract root domain
         }
 
-      } catch (err: any) {
+      } 
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+
+      catch (err: any) {
         setError(err.message || 'An error occurred');
       } finally {
         setLoading(false);

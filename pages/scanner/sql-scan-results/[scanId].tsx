@@ -62,7 +62,10 @@ const SQLScanResultsPage: React.FC = () => {
 
         setResults(data);
         setMessage(data.length > 0 ? 'SQL injection scan results loaded successfully.' : 'No SQL vulnerabilities found.');
-      } catch (err: any) {
+      }
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+ 
+      catch (err: any) {
         console.error('API Error:', err);
         const errorMessage = err.response?.data
           ? typeof err.response.data === 'string'

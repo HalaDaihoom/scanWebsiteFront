@@ -48,7 +48,10 @@ const XSSScanReportPage: React.FC = () => {
         window.URL.revokeObjectURL(url);
 
         router.push(`/scanner/xss-scan-results/${requestId}`);
-      } catch (err: any) {
+      } 
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+
+      catch (err: any) {
         setError(err.response?.data || 'Failed to download XSS report. Please try again later.');
         console.error(err);
       } 

@@ -48,7 +48,10 @@ const SQLcanReportPage: React.FC = () => {
         window.URL.revokeObjectURL(downloadUrl);
 
         router.push(`/scanner/sql-scan-results/${requestId}`);
-      } catch (err: any) {
+      } 
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+
+      catch (err: any) {
         console.error('Download error:', err);
         const message =
           err?.response?.data ||

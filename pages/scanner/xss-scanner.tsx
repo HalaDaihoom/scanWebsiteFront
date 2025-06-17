@@ -49,7 +49,10 @@ const XSSScannerPage: React.FC = () => {
       } else {
         setError('Redirect URL is missing in the response.');
       }
-    } catch (err: any) {
+    } 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+
+    catch (err: any) {
       setError(err.response?.data || 'An error occurred during XSS scan submission.');
       console.error(err);
     } finally {

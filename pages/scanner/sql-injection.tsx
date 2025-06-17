@@ -49,7 +49,10 @@ const SQLScannerPage: React.FC = () => {
     } else {
       setError('Redirect URL is missing in the response.');
     }
-  } catch (err: any) {
+  } 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+
+  catch (err: any) {
     console.error('Scan error:', err.response?.data);
     const errorMessage = err.response?.data?.Results?.[0]?.Details || 
                         err.response?.data?.Message || 
