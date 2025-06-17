@@ -75,7 +75,9 @@ const SQLcanReportPage: React.FC = () => {
       //     err?.message ||
       //     'An error occurred while downloading the report.';
       //   setError(message);
-      // } finally {
+      // 
+      // }
+     finally {
         setLoading(false);
       }
     };
