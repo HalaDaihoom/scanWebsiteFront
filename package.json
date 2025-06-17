@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.32",
-    "@types/node": "^20.19.0",
+    "@types/node": "^20.19.1",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",

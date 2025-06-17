@@ -1,4 +1,4 @@
-// components/NewLayout.tsx
+// components/homeLayout.tsx
 import React from 'react';
 import Link from 'next/link';
 
