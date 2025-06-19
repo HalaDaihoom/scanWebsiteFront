@@ -16,6 +16,8 @@ interface ResultsResponse {
   };
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const ScanResultsPage: React.FC = () => {
   const [results, setResults] = useState<ScanResult[]>([]);
   const [message, setMessage] = useState<string | null>(null);
@@ -40,7 +42,7 @@ const ScanResultsPage: React.FC = () => {
         }
 
         const response: AxiosResponse<ResultsResponse> = await axios.get(
-          `https://scanwebsite.azurewebsites.net/api/scan-result?scanId=${scanId}`,
+          `${API_URL}/api/scan-results?scanId=${scanId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

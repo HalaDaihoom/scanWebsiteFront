@@ -11,6 +11,8 @@ interface ScanHistoryEntry {
   zapScanId: number | null;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const ScanHistoryPage: React.FC = () => {
   const [history, setHistory] = useState<ScanHistoryEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ const ScanHistoryPage: React.FC = () => {
         }
 
         const response = await axios.get<{ $values: ScanHistoryEntry[] }>(
-          'http://scan-website.runasp.net/api/scan-results',
+          `${API_URL}/api/scan-results`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

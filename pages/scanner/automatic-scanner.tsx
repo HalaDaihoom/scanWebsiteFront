@@ -45,8 +45,10 @@ const AutomaticScannerPage: React.FC = () => {
       console.log('Response:', response.data);
 
       if (redirectUrl) {
-        router.push(redirectUrl); // Redirect to the scan-results page
-      } else {
+        const correctedUrl = redirectUrl.replace('/scan-result', '/scan-results');
+        router.push(correctedUrl);
+      }
+       else {
         setError('Redirect URL is missing in the response.');
       }
     } catch (err) {

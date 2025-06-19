@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import Layout from '../../Layout';
 import Cookies from 'js-cookie';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const ScanResult = () => {
   const router = useRouter();
-  const { scanId } = router.query;
+  // const { scanId } = router.query;
 
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +24,7 @@ const ScanResult = () => {
       }
 
       try {
-        const response = await fetch('http://scan-website.runasp.net/api/scan-subdomain-list', {
+        const response = await fetch(`${API_URL}/api/scan-subdomain-list`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
