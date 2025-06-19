@@ -42,7 +42,8 @@ const ScanResultsPage: React.FC = () => {
         }
 
         const response: AxiosResponse<ResultsResponse> = await axios.get(
-          `${API_URL}/api/scan-results?scanId=${scanId}`,
+          //`${API_URL}/api/scan-results?scanId=${scanId}`,
+          `${API_URL}/api/scan-results/${scanId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
