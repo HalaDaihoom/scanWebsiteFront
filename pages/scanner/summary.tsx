@@ -44,10 +44,16 @@ const SummaryPage = () => {
         const raw = response.data.summary;
         setSummary(raw);
         setSections(parseSections(raw));
-      } catch (err: any) {
-        setError('Failed to load or generate summary.');
-        console.error(err);
-      } finally {
+      }catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+          console.error(err);
+        } else {
+          setError('Failed to load or generate summary.');
+          console.error('Unknown error:', err);
+        }
+      }
+      finally {
         setLoading(false);
       }
     };
@@ -67,22 +73,24 @@ const SummaryPage = () => {
           {!loading && !error && sections.length > 0 && (
             <div className="space-y-4">
               {sections.map((section, index) => (
-                <div key={index} className="border border-gray-600 rounded-lg">
-                  <button
-                    onClick={() =>
-                      setOpenSection(openSection === index ? null : index)
-                    }
-                    className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 font-semibold text-lg rounded-t-lg"
-                  >
-                    {section.title}
-                  </button>
-                  {openSection === index && (
-                    <div className="px-4 py-3 bg-gray-900 whitespace-pre-wrap text-gray-200 rounded-b-lg">
-                      {section.content}
-                    </div>
-                  )}
-                </div>
-              ))}
+              <div key={index} className="border border-gray-600 rounded-lg">
+                <button
+                  onClick={() =>
+                    setOpenSection(openSection === index ? null : index)
+                  }
+                  className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 font-semibold text-lg rounded-t-lg"
+                >
+                  {section.title}
+                </button>
+                {openSection === index && (
+                  <div className="px-4 py-3 bg-gray-900 whitespace-pre-wrap text-gray-200 rounded-b-lg">
+                    {section.content}
+                  </div>
+                )}
+              </div>
+            ))}
+
+
             </div>
           )}
 
