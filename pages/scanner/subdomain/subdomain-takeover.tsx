@@ -22,7 +22,7 @@ const Home = () => {
         return;
       }
 
-      const response = await fetch('http://scan-website.runasp.net/api/scan-domain', {
+      const response = await fetch('https://scan-website.runasp.net/api/scan-domain', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

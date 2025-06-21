@@ -144,6 +144,7 @@ const ScanResultsPage: React.FC = () => {
         {error && <p className="text-red-400 text-lg mb-5">{error}</p>}
 
         {!loading && (
+        <>
           <div className="w-full max-w-4xl space-y-4">
             {results.length === 0 ? (
               <p className="text-gray-400 text-center text-lg">No vulnerabilities found.</p>
@@ -163,13 +164,11 @@ const ScanResultsPage: React.FC = () => {
 
                 return (
                   <div key={index} className="bg-gray-800 text-white p-6 rounded-lg shadow-2xl">
-                    {/* Alert Section */}
                     <div className="mb-2">
                       <span className="text-lg font-semibold text-red-400">Alert:</span>
                       <span className="text-lg font-medium text-gray-300 ml-2">{alertText}</span>
                     </div>
 
-                    {/* Severity Section */}
                     <div className="mb-2">
                       <span className="text-lg font-semibold text-indigo-400">Severity:</span>
                       <span
@@ -185,7 +184,6 @@ const ScanResultsPage: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Toggle Button */}
                     <button
                       onClick={() => toggleDetails(index)}
                       className="text-indigo-400 hover:text-indigo-300 focus:outline-none"
@@ -193,7 +191,6 @@ const ScanResultsPage: React.FC = () => {
                       {expandedIndices.includes(index) ? '▲ Hide Details' : '▼ Show Details'}
                     </button>
 
-                    {/* Details Section */}
                     {expandedIndices.includes(index) && (
                       <div className="mt-4">
                         <span className="text-lg font-semibold text-indigo-400">Details:</span>
@@ -205,7 +202,18 @@ const ScanResultsPage: React.FC = () => {
               })
             )}
           </div>
-        )}
+
+          {scanId && (
+            <button
+              onClick={() => router.push(`/scanner/summary?scanId=${scanId}`)}
+              className="mt-6 px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded shadow"
+            >
+              View Summary
+            </button>
+          )}
+        </>
+      )}
+
       </main>
     </Layout>
   );

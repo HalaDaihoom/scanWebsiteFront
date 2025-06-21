@@ -38,6 +38,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
                 Subdomain TakeOver
               </Link> 
+              <Link href="/scanner/subzy" className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap">
+                <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
+                subzy 
+              </Link> 
             </div>
           </div>
 
