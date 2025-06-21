@@ -3,7 +3,6 @@ import React from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

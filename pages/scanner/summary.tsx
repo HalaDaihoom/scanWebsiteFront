@@ -8,7 +8,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const parseSections = (text: string) => {
   const sections = text.split(/\n(?=\*\*\d+\.\s)/); // Match **1. Title**
-  return sections.map((section, index) => {
+  return sections.map((section, indx) => {
     const lines = section.split('\n');
     const title = lines[0].replace(/\*\*/g, '').trim();
     const content = lines.slice(1).join('\n').trim();
@@ -72,17 +72,18 @@ const SummaryPage = () => {
 
           {!loading && !error && sections.length > 0 && (
             <div className="space-y-4">
-              {sections.map((section, index) => (
-              <div key={index} className="border border-gray-600 rounded-lg">
+              
+              {sections.map((section, indx) => (
+              <div key={indx} className="border border-gray-600 rounded-lg">
                 <button
                   onClick={() =>
-                    setOpenSection(openSection === index ? null : index)
+                    setOpenSection(openSection === indx ? null : indx)
                   }
                   className="w-full text-left px-4 py-3 bg-gray-700 hover:bg-gray-600 font-semibold text-lg rounded-t-lg"
                 >
                   {section.title}
                 </button>
-                {openSection === index && (
+                {openSection === indx && (
                   <div className="px-4 py-3 bg-gray-900 whitespace-pre-wrap text-gray-200 rounded-b-lg">
                     {section.content}
                   </div>
