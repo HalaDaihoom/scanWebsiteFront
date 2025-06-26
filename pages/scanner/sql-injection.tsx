@@ -7,18 +7,8 @@ import Layout from '../Layout';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-function isAxiosErrorWithResponse(err: unknown): err is { response: { data: any } } {
-  return (
-    typeof err === 'object' &&
-    err !== null &&
-    'response' in err &&
-    typeof (err as any).response === 'object'
-  );
-}
-
 const SQLScannerPage: React.FC = () => {
   const [url, setUrl] = useState<string>('');
-  const [deepScan, setDeepScan] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -42,56 +32,47 @@ const SQLScannerPage: React.FC = () => {
       return;
     }
 
-
     try {
-    const response = await axios.post(
-      `${API_URL}/api/scan`,
-      { url, deepScan },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+      const response = await axios.post(
+        `${API_URL}/api/sql-scan-requests`,
+        { url },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    console.log('Scan response:', response.data);
+      console.log('Scan response:', response.data);
 
-    const redirectUrl = response.data.redirectUrl;
-    if (redirectUrl) {
-      router.push(redirectUrl);
-    } else {
-      setError('Redirect URL is missing in the response.');
-    }
-  } 
-  catch (err: unknown) {
-    console.error('Scan error:', err);
-  
-    let errorMessage = 'Failed to initiate SQL scan.';
-  
-    if (isAxiosErrorWithResponse(err)) {
-      const results = err.response?.data?.Results;
-      const message = err.response?.data?.Message;
-  
-      if (Array.isArray(results) && results[0]?.Details) {
-        errorMessage = results[0].Details;
-      } else if (typeof message === 'string') {
-        errorMessage = message;
+      const redirectUrl = response.data.redirectUrl;
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        setError('Redirect URL is missing in the response.');
       }
-    } else if (err instanceof Error) {
-      errorMessage = err.message;
+    } 
+    catch (err: unknown) {
+      console.error('Scan error:', err);
+    
+      let errorMessage = 'Failed to initiate SQL scan.';
+    
+      if (typeof err === 'object' && err !== null && 'response' in err) {
+        const response = (err as { response?: any }).response;
+    
+        if (response?.data?.Results?.[0]?.Details) {
+          errorMessage = response.data.Results[0].Details;
+        } else if (response?.data?.Message) {
+          errorMessage = response.data.Message;
+        }
+      }
+    
+      setError(errorMessage);
     }
-  
-    setError(errorMessage);
-  }
-   finally {
-    setLoading(false);
-  }
-  
-  // catch (err: any) {
-  //   console.error('Scan error:', err.response?.data);
-  //   const errorMessage = err.response?.data?.Results?.[0]?.Details || 
-  //                       err.response?.data?.Message || 
-  //                       'Failed to initiate SQL scan.';
-  //   setError(errorMessage);
-  // } finally {
-  //   setLoading(false);
-  // }
+    
+    finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -110,15 +91,7 @@ const SQLScannerPage: React.FC = () => {
               required
             />
           </label>
-          <label className="flex items-center mb-4">
-            <input
-              type="checkbox"
-              checked={deepScan}
-              onChange={(e) => setDeepScan(e.target.checked)}
-              className="mr-2 h-5 w-5 text-indigo-600 focus:ring-indigo-500"
-            />
-            <span className="text-lg">Deep Scan</span>
-          </label>
+
           <button
             type="submit"
             className="w-full py-3 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-500"

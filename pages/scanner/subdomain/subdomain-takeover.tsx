@@ -28,7 +28,7 @@ export default function SubdomainTakeover() {
 
     try {
       const response = await axios.post(
-        'https://8e30-156-209-31-59.ngrok-free.app/api/Scan-with-subzy',
+        'http://localhost:5000/api/Scan-with-subzy',
         { domain },
         {
           headers: {

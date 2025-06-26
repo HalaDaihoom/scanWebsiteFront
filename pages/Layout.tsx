@@ -107,12 +107,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 Subdomain TakeOver
               </Link>
               <Link
-                href="/scanner/subzy"
+                href="/scanner/subdomain-finder"
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
                 <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
-                subzy
+                subdomain-finder
               </Link>
             </div>
           </div>
