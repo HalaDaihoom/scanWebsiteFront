@@ -28,7 +28,7 @@ export default function SubdomainTakeover() {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/Scan-with-subzy',
+        `${API_URL}/api/Scan-with-subzy`,
         { domain },
         {
           headers: {
