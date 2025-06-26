@@ -79,7 +79,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                <img src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" />
+                {/* <img src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" /> */}
                 Automatic Scanner
               </Link>
               <Link
@@ -87,7 +87,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" />
+                {/* <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" /> */}
                 XSS Scanner
               </Link>
               <Link
@@ -95,7 +95,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                <img src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" />
+                {/* <img src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" /> */}
                 SQLI Scanner
               </Link>
               <Link
@@ -103,7 +103,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
+                {/* <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" /> */}
                 Subdomain TakeOver
               </Link>
               <Link
@@ -111,7 +111,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
+                {/* <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" /> */}
                 subdomain-finder
               </Link>
             </div>
