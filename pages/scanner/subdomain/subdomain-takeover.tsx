@@ -6,7 +6,7 @@ import axios, { AxiosError } from 'axios';
 
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000' || 'https://79f2-156-209-31-59.ngrok-free.app';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000' || 'https://6d63-156-209-31-59.ngrok-free.app';
 
 export default function SubdomainTakeover() {
   const [domain, setDomain] = useState('');
