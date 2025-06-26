@@ -1,96 +1,85 @@
 import React, { useState } from 'react';
-import Layout from '../../Layout';
-import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-const Home = () => {
-  const [url, setUrl] = useState('');
+import { useRouter } from 'next/router';
+import Layout from '../../Layout';
+import axios, { AxiosError } from 'axios';
+
+
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000' || 'https://79f2-156-209-31-59.ngrok-free.app';
+
+export default function SubdomainTakeover() {
+  const [domain, setDomain] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError(null);
+
+    const token = Cookies.get('token');
+    if (!token) {
+      setError('You are not authorized.');
+      router.push('/login');
+      return;
+    }
 
     try {
-      const token = Cookies.get('token'); 
-
-      if (!token) {
-        setError('You must be logged in to perform this action.');
-        router.push('/login');
-        return;
-      }
-
-      const response = await fetch('https://scan-website.runasp.net/api/scan-domain', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        },
-        body: JSON.stringify(url),
-
-      });
-
-      const text = await response.text();
-
-      if (!text.trim()) {
-        throw new Error('Empty response from server');
-      }
-
-      const data = JSON.parse(text);
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Scan failed');
-      }
-
-      // Redirect with scanId
-      router.push(`/scanner/subdomain/subdomain-result?scanId=${data.scanId}`);
-    } 
-    catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Unexpected error');
-      }
-    }
+      const response = await axios.post(
+        'https://8e30-156-209-31-59.ngrok-free.app/api/Scan-with-subzy',
+        { domain },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
     
-    // catch (err: any) {
-    //   setError(err.message || 'Unexpected error');
-    // }
-
-    setLoading(false);
+      // Store results in sessionStorage
+      sessionStorage.setItem('subzyResults', JSON.stringify(response.data.results));
+      sessionStorage.setItem('domain', domain);
+    
+      router.push('/scanner/subdomain/subdomain-result');
+    } catch (err: unknown) {
+      console.error('Scan error:', err);
+    
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || 'Scan failed.');
+      } else {
+        setError('Scan failed.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Layout>
-      <main className="flex flex-col items-center justify-center min-h-screen py-10 bg-[#0A0A23] text-white">
-        <h1 className="text-3xl mb-5">Subdomain Takeover</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col max-w-md w-full p-5 bg-white rounded shadow-lg text-black">
-          <label className="text-lg mb-2">
-            URL:
-            <input
-              type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="mt-1 p-2 border border-gray-300 rounded w-full"
-              placeholder="Enter URL to scan for Subdomain Takeover"
-              required
-            />
-          </label>
-
-          <button
-            type="submit"
-            className="mt-4 py-2 px-4 bg-[#1A1A3D] text-white rounded"
-            disabled={loading}
-          >
-            {loading ? 'Scanning...' : 'Start Scan'}
-          </button>
-        </form>
+    <main className="p-6 max-w-xl mx-auto text-center">
+      <h1 className="text-2xl font-bold mb-4">Subdomain Takeover Scanner</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={domain}
+          onChange={(e) => setDomain(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded mb-4"
+          placeholder="Enter domain e.g. example.com"
+          required
+        />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+          disabled={loading}
+        >
+          {loading ? 'Scanning...' : 'Start Scan'}
+        </button>
         {error && <p className="text-red-500 mt-4">{error}</p>}
-      </main>
+      </form>
+    </main>
     </Layout>
   );
-};
-
-export default Home;
+}

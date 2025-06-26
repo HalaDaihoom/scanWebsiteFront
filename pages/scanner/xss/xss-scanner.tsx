@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import Layout from '../Layout';
+import Layout from '../../Layout'; // Adjusted for pages/layouts/Layout.tsx
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL; 
 
-const XSSScannerPage: React.FC = () => {
+const XssScannerPage: React.FC = () => {
   const [url, setUrl] = useState('');
-  const [deepScan, setDeepScan] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -34,76 +33,50 @@ const XSSScannerPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/api/xss-scan/scan`,
-        { url, deepScan },
+        `${API_URL}/api/xss/scan-requests`,
+        { url },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const { redirectUrl } = response.data;
+      let { redirectUrl } = response.data;
       console.log('Response:', response.data);
 
       if (redirectUrl) {
-        // Ensure redirect URL is correctly formatted
-        const correctedRedirectUrl = redirectUrl.replace('/scan-results/', '/scanner/xss-scan-results/');
-        router.push(correctedRedirectUrl);
+        // Prepend '/scanner' to redirectUrl if it starts with '/xss/scan-results'
+        if (redirectUrl.startsWith('/xss/scan-results')) {
+          redirectUrl = `/scanner${redirectUrl}`;
+        }
+        router.push(redirectUrl); // Redirect to /scanner/xss/scan-results/{scanId}
       } else {
         setError('Redirect URL is missing in the response.');
       }
-    } 
-    catch (err: unknown) {
-      console.error(err);
-      let errorMessage = 'An error occurred during XSS scan submission.';
-    
-      if (
-        typeof err === 'object' &&
-        err !== null &&
-        'response' in err &&
-        typeof (err as any).response === 'object'
-      ) {
-        errorMessage = (err as any).response?.data || errorMessage;
-      }
-    
-      setError(errorMessage);
+    } catch (err) {
+      setError('An error occurred during scan submission. Please try again.');
+      console.error('Scan submission error:', err);
     } finally {
       setLoading(false);
     }
-    
-    // catch (err: any) {
-    //   setError(err.response?.data || 'An error occurred during XSS scan submission.');
-    //   console.error(err);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   return (
     <Layout>
       <main className="flex flex-col items-center justify-center min-h-screen py-10 bg-[#0A0A23] text-white">
         <h1 className="text-3xl mb-5">XSS Scanner</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col max-w-md w-full p-5 bg-white rounded shadow-lg text-black">
-          <label className="text-lg mb-2">
-            URL:
+        <form onSubmit={handleSubmit} className="flex flex-col max-w-md w-full p-5 bg-white rounded shadow-lg">
+          <label className="text-lg mb-2 text-gray-800">
+            Website URL:
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="mt-1 p-2 border border-gray-300 rounded w-full"
-              placeholder="Enter URL to scan for XSS"
+              className="mt-1 p-2 border border-gray-300 rounded w-full text-gray-800"
+              placeholder="Enter website URL (e.g., https://example.com)"
               required
             />
           </label>
-          <label className="text-lg mb-2">
-            <input
-              type="checkbox"
-              checked={deepScan}
-              onChange={(e) => setDeepScan(e.target.checked)}
-              className="mr-2"
-            />
-            Deep Scan
-          </label>
           <button
             type="submit"
-            className="mt-4 py-2 px-4 bg-[#1A1A3D] text-white rounded flex items-center justify-center"
+            className="mt-4 py-2 px-4 bg-[#1A1A3D] text-white rounded flex items-center justify-center hover:bg-[#2A2A4D] transition-colors"
             disabled={loading}
           >
             {loading && (
@@ -111,7 +84,7 @@ const XSSScannerPage: React.FC = () => {
                 <div className="circle"></div>
               </div>
             )}
-            {loading ? 'Scanning for XSS...' : 'Start XSS Scan'}
+            {loading ? 'Scanning...' : 'Start XSS Scan'}
           </button>
         </form>
         {error && <p className="text-red-500 mt-2">{error}</p>}
@@ -141,4 +114,4 @@ const XSSScannerPage: React.FC = () => {
   );
 };
 
-export default XSSScannerPage;
+export default XssScannerPage;

@@ -18,7 +18,8 @@ const parseSections = (text: string) => {
 
 const SummaryPage = () => {
   const router = useRouter();
-  const { scanId } = router.query;
+  const { requestId } = router.query;
+
 
   const [summary, setSummary] = useState('');
   const [sections, setSections] = useState<{ title: string; content: string }[]>([]);
@@ -27,8 +28,9 @@ const SummaryPage = () => {
   const [openSection, setOpenSection] = useState<number | null>(null);
 
   useEffect(() => {
+    if (!router.isReady || !requestId) return;
     const fetchSummary = async () => {
-      if (!scanId) return;
+      if (!requestId) return;
 
       try {
         const token = Cookies.get('token');
@@ -37,7 +39,8 @@ const SummaryPage = () => {
           return;
         }
 
-        const response = await axios.get(`${API_URL}/api/summary?scanId=${scanId}`, {
+        const response = await axios.get(`${API_URL}/api/summary?requestId=${requestId}`, {
+
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -59,7 +62,7 @@ const SummaryPage = () => {
     };
 
     fetchSummary();
-  }, [scanId]);
+  }, [router.isReady, requestId]);
 
   return (
     <Layout>
