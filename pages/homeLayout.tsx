@@ -21,7 +21,7 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex flex-wrap justify-between items-center">
             <div className="w-full md:w-1/3 mb-6 md:mb-0">
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2">
+              {/* <ul className="space-y-2">
                 <li>
                   <Link href="/company/about" className="hover:underline">About Us</Link>
                 </li>
@@ -31,7 +31,7 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <li>
                   <Link href="/company/reviews" className="hover:underline">Reviews</Link>
                 </li>
-              </ul>
+              </ul> */}
             </div>
 
             <div className="w-full md:w-1/3 mb-6 md:mb-0">
