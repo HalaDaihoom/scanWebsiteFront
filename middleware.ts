@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token'); // Use cookies for secure storage
 
   // Redirect to login if token is missing on protected routes
-  if (request.nextUrl.pathname.startsWith('/userhome') && !token) {
+  if (request.nextUrl.pathname.startsWith('/home') && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -17,5 +17,5 @@ export function middleware(request: NextRequest) {
 
 // Define the routes where the middleware should be applied
 export const config = {
-  matcher: ['/userhome/:path*'], // Protect the home page and any subroutes like /home/settings
+  matcher: ['/home/:path*'], // Protect the home page and any subroutes like /home/settings
 };

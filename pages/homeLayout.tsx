@@ -6,7 +6,7 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="min-h-screen font-sans bg-gray-900 text-white">
       <header className="bg-gray-800 p-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Vulnerability Scanner</h1>
+        <h1 className="text-3xl font-bold">BugSloth</h1>
         <nav className="flex space-x-6">
           <Link href="/login" className="text-white hover:underline">Login</Link>
           <Link href="/register" className="text-white hover:underline">Register</Link>
@@ -49,7 +49,7 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
 
             <div className="w-full md:w-1/3 text-center md:text-right">
-              <p className="text-gray-300">&copy; {new Date().getFullYear()} Vulnerability Scanner. All rights reserved.</p>
+              <p className="text-gray-300">&copy; {new Date().getFullYear()} BugSloth. All rights reserved.</p>
             </div>
           </div>
         </div>

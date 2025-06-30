@@ -59,9 +59,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="min-h-screen font-sans bg-gray-900 text-white">
       <header className="bg-gray-800 p-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Vulnerability Scanner</h1>
+        <h1 className="text-3xl font-bold">BugSloth </h1>
         <nav className="flex space-x-6 items-center">
-          <Link href="/userhome" className="text-white hover:underline">Home</Link>
+          <Link href="/home" className="text-white hover:underline">Home</Link>
 
           <div
             className="relative"
@@ -112,7 +112,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 onClick={() => setActiveDropdown(null)}
               >
                 {/* <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" /> */}
-                subdomain-finder
+                Subdomain Finder
               </Link>
             </div>
           </div>

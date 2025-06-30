@@ -13,26 +13,9 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [gender, setGender] = useState('');
-  const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isImageValid, setIsImageValid] = useState(true);
-  const router = useRouter();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      const fileType = file.type.split('/')[0];
-      if (fileType !== 'image') {
-        setError('Please upload a valid image file (JPG, PNG, etc.).');
-        setIsImageValid(false);
-        setImage(null);
-      } else {
-        setError(null);
-        setIsImageValid(true);
-        setImage(file);
-      }
-    }
-  };
+  const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,11 +33,6 @@ const Register = () => {
       return;
     }
 
-    if (!isImageValid) {
-      setError('Please upload a valid image before submitting the form.');
-      return;
-    }
-
     const formData = new FormData();
     formData.append('FirstName', firstName);
     formData.append('LastName', lastName);
@@ -62,7 +40,6 @@ const Register = () => {
     formData.append('Email', email);
     formData.append('Password', password);
     formData.append('Gender', gender);
-    if (image) formData.append('Image', image);
 
     try {
       const response = await axios.post(`${API_URL}/api/users`, formData, {
@@ -71,7 +48,7 @@ const Register = () => {
 
       if (response.data.token) {
         Cookies.set('token', response.data.token, { expires: 1 });
-        router.push('/login');
+        router.push('/welcome');
       }
     } catch (err) {
       console.error('Registration failed:', err);
@@ -101,22 +78,26 @@ const Register = () => {
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required className="p-3 mb-4 border border-gray-300 rounded-md bg-opacity-80 bg-white focus:outline-none focus:ring focus:ring-blue-500 text-black" />
           <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required className="p-3 mb-4 border border-gray-300 rounded-md bg-opacity-80 bg-white focus:outline-none focus:ring focus:ring-blue-500 text-black" />
 
-          <label className="text-black mb-2">Gender</label>
-          <div className="flex justify-between mb-4">
-            <label className="text-black">
-              <input type="radio" value="Male" checked={gender === 'Male'} onChange={() => setGender('Male')} required className="mr-2" />
-              Male
-            </label>
-            <label className="text-black">
-              <input type="radio" value="Female" checked={gender === 'Female'} onChange={() => setGender('Female')} required className="mr-2" />
-              Female
-            </label>
-          </div>
+          {/* <label className="text-black mb-2" htmlFor="gender">Gender</label> */}
+          <select
+            id="gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            required
+            className={`p-3 mb-4 border border-gray-300 rounded-md bg-opacity-80 bg-white focus:outline-none focus:ring focus:ring-blue-500 ${
+              gender ? 'text-black' : 'text-gray-400'
+            }`}
+          >
+            <option value="" disabled>Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
 
-          <input type="file" onChange={handleImageChange} accept="image/*" className="p-3 mb-4 border border-gray-300 rounded-md bg-opacity-80 bg-white focus:outline-none focus:ring focus:ring-blue-500 text-black" />
+
+
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-          <button type="submit" className="p-3 bg-blue-900 text-white rounded-md hover:bg-blue-800 transition-colors" disabled={!isImageValid}>
+          <button type="submit" className="p-3 bg-blue-900 text-white rounded-md hover:bg-blue-800 transition-colors">
             Register
           </button>
         </form>
