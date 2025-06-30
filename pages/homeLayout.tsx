@@ -1,5 +1,6 @@
 // components/homeLayout.tsx
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -36,14 +37,15 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div className="w-full md:w-1/3 mb-6 md:mb-0">
               <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
               <div className="flex space-x-4">
-                <a href="https://facebook.com" className="hover:text-gray-400">
-                  <img src="/facebook.png" alt="Facebook" className="w-6 h-6"/>
-                </a>
+              <a href="https://facebook.com">
+                <Image src="/facebook.png" alt="Facebook" width={24} height={24} />
+              </a>
+
                 <a href="https://twitter.com" className="hover:text-gray-400">
-                  <img src="/twitter.png" alt="Twitter" className="w-6 h-6"/>
+                  <Image src="/twitter.png" alt="Twitter" className="w-6 h-6"/>
                 </a>
                 <a href="https://linkedin.com" className="hover:text-gray-400">
-                  <img src="/linkedin.png" alt="LinkedIn" className="w-6 h-6"/>
+                  <Image src="/linkedin.png" alt="LinkedIn" className="w-6 h-6"/>
                 </a>
               </div>
             </div>

@@ -1,7 +1,7 @@
 
 // pages/index.tsx
 import React from 'react';
-import NewLayout from './homeLayout'; // Import the new layout
+import NewLayout from './homeLayout'; // ✅ CORRECT
 
 const NewHome = () => {
   return (

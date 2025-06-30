@@ -35,11 +35,11 @@ const parseSections = (text: string): Section[] => {
     const contentLines = lines.slice(1).filter(line => line.trim());
 
     let intro = '';
-    let tableLines: string[] = [];
+    const tableLines: string[] = [];
 
     // Separate intro text from table
     let isTableSection = false;
-    for (let line of contentLines) {
+    for (const line of contentLines) {
       if (line.trim().startsWith('|')) {
         isTableSection = true;
       }

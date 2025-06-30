@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -79,7 +80,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                {/* <img src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" /> */}
+                <Image src="/auto.png" alt="Automatic Scanner" className="w-6 h-6 mr-2" />
                 Automatic Scanner
               </Link>
               <Link
@@ -87,7 +88,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                {/* <img src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" /> */}
+                <Image src="/xss.png" alt="XSS Scanner" className="w-6 h-6 mr-2" />
                 XSS Scanner
               </Link>
               <Link
@@ -95,7 +96,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                {/* <img src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" /> */}
+                <Image src="/sqlo.png" alt="SQLI Scanner" className="w-6 h-6 mr-2" />
                 SQLI Scanner
               </Link>
               <Link
@@ -103,7 +104,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                {/* <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" /> */}
+                <Image src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
                 Subdomain TakeOver
               </Link>
               <Link
@@ -111,7 +112,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 className="flex items-center p-2 hover:bg-gray-100 rounded whitespace-nowrap"
                 onClick={() => setActiveDropdown(null)}
               >
-                {/* <img src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" /> */}
+                <Image src="/csrf.png" alt="CSRF Scanner" className="w-6 h-6 mr-2" />
                 Subdomain Finder
               </Link>
             </div>
@@ -248,15 +249,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div className="w-full md:w-1/3 mb-6 md:mb-0">
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li>
+                {/* <li>
                   <Link href="/company/about" className="hover:underline">About Us</Link>
                 </li>
                 <li>
                   <Link href="/company/contact" className="hover:underline">Contact</Link>
-                </li>
-                <li>
-                  <Link href="/company/reviews" className="hover:underline">Reviews</Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 

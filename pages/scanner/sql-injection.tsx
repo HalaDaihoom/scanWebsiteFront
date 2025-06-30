@@ -95,7 +95,7 @@ const SQLScannerPage: React.FC = () => {
             Our scanner uses automated tools to detect SQL injection vulnerabilities on your website by simulating attack vectors. The scanner performs a spidering process followed by injection tests to identify any weaknesses.
           </p>
           <p className="text-lg mb-4">
-            Enter a valid URL on the right, and we'll start scanning your website for potential SQL injection flaws. The scan may take a few minutes to complete.
+            Enter a valid URL on the right, and we&apos;ll start scanning your website for potential SQL injection flaws. The scan may take a few minutes to complete.
           </p>
           <p className="text-sm italic text-gray-400 mt-2">Note: Only scan websites you own or have permission to test.</p>
         </section>
