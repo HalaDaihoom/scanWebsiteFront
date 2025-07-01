@@ -36,10 +36,10 @@ export default function SubdomainResult() {
           return;
         }
 
-        let status = ' Unknown';
-        if (lowered.includes('not vulnerable')) status = ' Not Vulnerable';
-        else if (lowered.includes('vulnerable')) status = ' Vulnerable';
-        else if (lowered.includes('http error')) status = ' HTTP Error';
+        let status = 'Unknown';
+        if (lowered.includes('not vulnerable')) status = 'Not Vulnerable';
+        else if (lowered.includes('vulnerable')) status = 'Vulnerable';
+        else if (lowered.includes('http error')) status = 'HTTP Error';
 
         let severity = 'Info';
         if (lowered.includes('not vulnerable')) severity = 'Secured';
@@ -57,26 +57,49 @@ export default function SubdomainResult() {
   const handleDownload = async () => {
     const token = Cookies.get('token');
     if (!domain) return alert('No domain found.');
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/takeover-reports/${domain}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!res.ok) return alert('Failed to download report.');
-
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `subzy-report-${domain}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
+  
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/takeover-reports/${domain}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Before throwing, verify that you can proceed
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Download failed:", errorText);
+        alert('Failed to download report.');
+        return;
+      }
+  
+      const blob = await res.blob();
+  
+      // Prevent alert if blob is not really PDF
+      if (blob.type !== 'application/pdf') {
+        const text = await blob.text();
+        console.error("Unexpected content:", text);
+        alert('Server did not return a valid PDF file.');
+        return;
+      }
+  
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `subzy-report-${domain}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+  
+    } catch (err) {
+      // Only show alert if no file was downloaded
+      console.error("Download error:", err);
+      
+    }
   };
+  
 
   const getRowColor = (severity: string) => {
     switch (severity.toLowerCase()) {
@@ -97,14 +120,14 @@ export default function SubdomainResult() {
           Scan Results for <span className="text-white">{domain}</span>
         </h1>
         <div className="flex justify-between items-center mt-8">
-          
           <button
             onClick={handleDownload}
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
-             Download PDF Report
+            Download PDF Report
           </button>
         </div>
+
         {metaInfo.length > 0 && (
           <div className="mb-6 bg-gray-800 rounded p-4 border border-gray-700">
             <h2 className="text-lg font-semibold text-indigo-400 mb-2">Scanner Configuration</h2>
@@ -140,16 +163,6 @@ export default function SubdomainResult() {
             </table>
           </div>
         )}
-
-        {/* <div className="flex justify-between items-center mt-8">
-          
-          <button
-            onClick={handleDownload}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-             Download PDF Report
-          </button>
-        </div> */}
       </div>
     </Layout>
   );

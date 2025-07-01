@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import Layout from '../Layout';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const SQLScannerPage: React.FC = () => {
   const [url, setUrl] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +46,7 @@ const SQLScannerPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/sql-scan-requests',
+        `${API_URL}/api/sql-scan-requests`,
         { url },
         {
           headers: {
@@ -69,10 +71,11 @@ const SQLScannerPage: React.FC = () => {
         typeof (err as any).response === 'object'
       ) {
         const response = (err as any).response;
+    
         errorMessage =
           response?.data?.Results?.[0]?.Details ||
           response?.data?.Message ||
-          errorMessage;
+          'Failed to initiate SQL scan.';
       }
     
       setError(errorMessage);
@@ -95,7 +98,7 @@ const SQLScannerPage: React.FC = () => {
             Our scanner uses automated tools to detect SQL injection vulnerabilities on your website by simulating attack vectors. The scanner performs a spidering process followed by injection tests to identify any weaknesses.
           </p>
           <p className="text-lg mb-4">
-            Enter a valid URL on the right, and we&apos;ll start scanning your website for potential SQL injection flaws. The scan may take a few minutes to complete.
+            Enter a valid URL on the right, and we'll start scanning your website for potential SQL injection flaws. The scan may take a few minutes to complete.
           </p>
           <p className="text-sm italic text-gray-400 mt-2">Note: Only scan websites you own or have permission to test.</p>
         </section>

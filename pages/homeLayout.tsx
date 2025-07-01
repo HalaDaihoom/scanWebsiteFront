@@ -42,10 +42,10 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </a>
 
                 <a href="https://twitter.com" className="hover:text-gray-400">
-                  <Image src="/twitter.png" alt="Twitter" className="w-6 h-6"/>
+                  <img src="/twitter.png" alt="Twitter" className="w-6 h-6"/>
                 </a>
                 <a href="https://linkedin.com" className="hover:text-gray-400">
-                  <Image src="/linkedin.png" alt="LinkedIn" className="w-6 h-6"/>
+                  <img src="/linkedin.png" alt="LinkedIn" className="w-6 h-6"/>
                 </a>
               </div>
             </div>

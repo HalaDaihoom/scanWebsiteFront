@@ -12,8 +12,6 @@ const SQLcanReportPage: React.FC = () => {
   const router = useRouter();
   const { requestId } = router.query;
 
-
-
   useEffect(() => {
     const fetchAndDownloadReport = async () => {
       if (!requestId) return;
@@ -50,26 +48,18 @@ const SQLcanReportPage: React.FC = () => {
         window.URL.revokeObjectURL(downloadUrl);
 
         router.push(`/scanner/sql-injection-results/${requestId}`);
-      } 
-      // catch (err: any) {
-      //   console.error('Download error:', err);
-      //   const message =
-      //     err?.response?.data ||
-      //     err?.message ||
-      //     'An error occurred while downloading the report.';
-      //   setError(message);
-      // }
-      catch (err: unknown) {
+      } catch (err: unknown) {
         console.error('Download error:', err);
+      
         let message = 'An error occurred while downloading the report.';
       
         if (typeof err === 'object' && err !== null) {
-          if ('response' in err && typeof err.response === 'object' && err.response !== null) {
-            const errorObj = err as { response?: { data?: string } };
-            message = errorObj.response?.data || message;
-          } else if ('message' in err && typeof err.message === 'string') {
-            message = err.message;
-          }
+          const maybeError = err as { response?: { data?: string }; message?: string };
+      
+          message =
+            maybeError.response?.data ||
+            maybeError.message ||
+            message;
         }
       
         setError(message);

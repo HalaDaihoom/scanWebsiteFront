@@ -118,33 +118,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
 
-          <div
-            className="relative"
-            onMouseEnter={() => handleMouseEnter('services')}
-            onMouseLeave={handleMouseLeave}
-          >
-            <button className="text-white">Services</button>
-            <div
-              className={`absolute bg-white text-black rounded-md shadow-lg mt-2 p-2 transition-opacity duration-200 ${
-                activeDropdown === 'services' ? 'opacity-100 visible' : 'opacity-0 invisible'
-              }`}
-            >
-              <Link
-                href="/services/automatic-scanner"
-                className="block px-4 py-2 hover:bg-gray-100 rounded"
-                onClick={() => setActiveDropdown(null)}
-              >
-                Automatic Scanning
-              </Link>
-              <Link
-                href="/services/manual-scanner"
-                className="block px-4 py-2 hover:bg-gray-100 rounded"
-                onClick={() => setActiveDropdown(null)}
-              >
-                Manual Scanning
-              </Link>
-            </div>
-          </div>
+          
 
           <div
             className="relative"
