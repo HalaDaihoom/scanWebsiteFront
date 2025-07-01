@@ -20,6 +20,16 @@ interface AxiosErrorResponse {
   message?: string;
 }
 
+interface ParsedDetails {
+  Alert?: string;
+  URL?: string;
+  Risk?: string;
+  Confidence?: string;
+  Description?: string;
+  Solution?: string;
+  Reference?: string;
+}
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const ScanResultsPage: React.FC = () => {
@@ -36,7 +46,6 @@ const ScanResultsPage: React.FC = () => {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-
       try {
         if (!requestId) return;
 
@@ -56,16 +65,15 @@ const ScanResultsPage: React.FC = () => {
           }
         );
 
-        if (response.data.results && response.data.results.$values) {
-          setResults(response.data.results.$values);
-        } else {
-          setResults([]);
-        }
-
+        setResults(response.data.results?.$values || []);
         setMessage(response.data.message || '');
-      } catch (err) {
-        setError('Failed to load scan results. Please try again later.');
-        console.error(err);
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data?.message || 'Failed to load scan results.');
+        } else {
+          setError('An unknown error occurred while loading results.');
+          console.error('Unexpected error:', err);
+        }
       } finally {
         setLoading(false);
       }
@@ -86,8 +94,7 @@ const ScanResultsPage: React.FC = () => {
     }
 
     try {
-      const parsedDetails = JSON.parse(details);
-      const { URL, Risk, Confidence, Description, Solution, Reference } = parsedDetails;
+      const parsedDetails = JSON.parse(details) as ParsedDetails;
 
       return (
         <div className="text-sm text-gray-200 bg-gray-700 p-3 rounded-md mt-2">
@@ -96,46 +103,46 @@ const ScanResultsPage: React.FC = () => {
               <span className="font-semibold text-red-400">Alert:</span> {parsedDetails.Alert}
             </div>
           )}
-          {URL && (
+          {parsedDetails.URL && (
             <div>
               <span className="font-semibold text-indigo-400">URL:</span>{' '}
-              <a href={URL} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
-                {URL}
+              <a href={parsedDetails.URL} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                {parsedDetails.URL}
               </a>
             </div>
           )}
-          {Risk && (
+          {parsedDetails.Risk && (
             <div>
-              <span className="font-semibold text-yellow-400">Risk:</span> {Risk}
+              <span className="font-semibold text-yellow-400">Risk:</span> {parsedDetails.Risk}
             </div>
           )}
-          {Confidence && (
+          {parsedDetails.Confidence && (
             <div>
-              <span className="font-semibold text-green-400">Confidence:</span> {Confidence}
+              <span className="font-semibold text-green-400">Confidence:</span> {parsedDetails.Confidence}
             </div>
           )}
-          {Description && (
+          {parsedDetails.Description && (
             <div className="mt-2">
-              <span className="font-semibold text-gray-300">Description:</span> {Description}
+              <span className="font-semibold text-gray-300">Description:</span> {parsedDetails.Description}
             </div>
           )}
-          {Solution && (
+          {parsedDetails.Solution && (
             <div className="mt-2">
-              <span className="font-semibold text-green-400">Solution:</span> {Solution}
+              <span className="font-semibold text-green-400">Solution:</span> {parsedDetails.Solution}
             </div>
           )}
-          {Reference && (
+          {parsedDetails.Reference && (
             <div className="mt-2">
               <span className="font-semibold text-yellow-400">Reference:</span>{' '}
-              <a href={Reference} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
-                {Reference}
+              <a href={parsedDetails.Reference} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                {parsedDetails.Reference}
               </a>
             </div>
           )}
         </div>
       );
     } catch (err) {
-      console.error("Failed to parse details:", err);
+      console.error('Failed to parse details:', err);
       return <div className="text-sm text-gray-200">Invalid details format.</div>;
     }
   };
@@ -163,7 +170,7 @@ const ScanResultsPage: React.FC = () => {
       );
 
       setSummaryStatus('success');
-    } catch (error) {
+    } catch (error: unknown) {
       setSummaryStatus('error');
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<AxiosErrorResponse>;
@@ -174,8 +181,8 @@ const ScanResultsPage: React.FC = () => {
         }
       } else {
         setSummaryError('An unexpected error occurred while generating the summary.');
+        console.error('Summary generation failed:', error);
       }
-      console.error('Summary generation failed:', error);
     }
   };
 
@@ -191,19 +198,21 @@ const ScanResultsPage: React.FC = () => {
           <>
             <div className="w-full max-w-4xl space-y-4">
               {results.length === 0 ? (
-                <p className="text-gray-400 text-center text-lg">No vulnerabilities found.</p>
+                <p className="text-gray-400 text-center text-lg">
+                  Your scan didn&apos;t detect any issues.
+                </p>
               ) : (
                 results.map((result, index) => {
-                  let alertText = "Unknown Alert";
-                  const hasDetails = result.details && result.details.trim() !== "";
+                  let alertText = 'Unknown Alert';
+                  const hasDetails = result.details && result.details.trim() !== '';
 
                   try {
                     if (hasDetails) {
-                      const parsedDetails = JSON.parse(result.details);
-                      alertText = parsedDetails.Alert || "Unknown Alert";
+                      const parsedDetails = JSON.parse(result.details) as ParsedDetails;
+                      alertText = parsedDetails.Alert || 'Unknown Alert';
                     }
                   } catch (err) {
-                    console.error("Failed to parse details:", err);
+                    console.error('Failed to parse details:', err);
                   }
 
                   return (
@@ -271,9 +280,7 @@ const ScanResultsPage: React.FC = () => {
                     View Summary
                   </button>
                 )}
-                {summaryError && (
-                  <p className="text-red-400 text-lg mt-2">{summaryError}</p>
-                )}
+                {summaryError && <p className="text-red-400 text-lg mt-2">{summaryError}</p>}
               </div>
             )}
           </>
