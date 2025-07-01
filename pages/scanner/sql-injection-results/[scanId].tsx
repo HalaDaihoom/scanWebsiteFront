@@ -123,7 +123,7 @@ const SQLScanResultsPage: React.FC = () => {
         {!loading && results.length === 0 && !error && (
           <div className="text-center mt-10 text-gray-400">
             <p className="text-2xl mb-2">✅ No SQL vulnerabilities found!</p>
-            <p className="text-sm">Your scan didn't detect any SQL injection issues.</p>
+            <p className="text-sm">Your scan didn&#39;t detect any SQL injection issues.</p>
           </div>
         )}
 
