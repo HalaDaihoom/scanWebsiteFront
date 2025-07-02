@@ -28,7 +28,7 @@ export default function SubdomainTakeover() {
 
     try {
       const response = await axios.post(
-        `https://cf88-156-209-61-245.ngrok-free.app/api/takeovers`,
+        `https://fad5-156-209-61-245.ngrok-free.app/api/takeovers`,
         { domain },
         {
           headers: {
